@@ -173,3 +173,42 @@ order by contacttitle
 -- together in a logical way.
 -- Here’s a data model of the relationship between
 -- Products and Suppliers.
+
+select p.productid, p.productname, s.companyname from suppliers as s
+inner join products as p
+using(supplierid)
+order by productid
+
+-- 19. Orders and the Shipper that was used
+-- We’d like to show a list of the Orders that were
+-- made, including the Shipper that was used. Show the
+-- OrderID, OrderDate (date only), and CompanyName
+-- of the Shipper, and sort by OrderID.
+-- In order to not show all the orders (there’s more than
+-- 800), show only those rows with an OrderID of less
+-- than 10300.
+
+select o.orderid, cast(o.orderdate as date), s.companyname as shipper_company_name from orders as o
+inner join shippers as s
+on o.shipvia = s.shipperid
+where orderid < 10300
+order by orderid
+
+-- 20. Categories, and the total products in each category
+-- For this problem, we’d like to see the total number of
+-- products in each category. Sort the results by the total
+-- number of products, in descending order.
+
+select c.categoryname, count(productname) as no_of_products from products as p
+inner join categories as c
+on c.categoryid = p.categoryid
+group by c.categoryname
+order by no_of_products desc
+
+-- 21. Total customers per country/city
+-- In the Customers table, show the total number of
+-- customers per Country and City.
+
+select country, city, count(customerid) as total_customers from customers
+group by country, city
+order by country
